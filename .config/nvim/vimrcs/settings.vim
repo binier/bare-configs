@@ -55,9 +55,6 @@ set ruler
 set number relativenumber
 
 let no_buffers_menu=0
-if !exists('g:not_finish_vimplug')
-  colorscheme molokai
-endif
 
 set mousemodel=popup
 set t_Co=256
@@ -98,11 +95,6 @@ set titleold="Terminal"
 set titlestring=%F
 
 set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
-
-" Search mappings: These will make it so that going to the next one in a
-" search will center on the line it's found in.
-nnoremap n nzzzv
-nnoremap N Nzzzv
 
 if exists("*fugitive#statusline")
   set statusline+=%{fugitive#statusline()}
@@ -363,14 +355,14 @@ nnoremap <Leader>o :.Gbrowse<CR>
 " Custom configs
 "*****************************************************************************
 
-" c
-autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
-autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
+" " c
+" autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
+" autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
 
 
-" html
-" for html files, 2 spaces
-autocmd Filetype html setlocal ts=2 sw=2 expandtab
+" " html
+" " for html files, 2 spaces
+" autocmd Filetype html setlocal ts=2 sw=2 expandtab
 
 
 " javascript
@@ -387,8 +379,8 @@ augroup END
 " vim-python
 augroup vimrc-python
   autocmd!
-  autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79
-      \ formatoptions+=croq softtabstop=4
+  autocmd FileType python setlocal expandtab shiftwidth=2 tabstop=2 colorcolumn=79
+      \ formatoptions+=croq softtabstop=2
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
@@ -406,10 +398,10 @@ let g:jedi#smart_auto_mappings = 0
 " syntastic
 let g:syntastic_python_checkers=['python', 'flake8']
 
-" Syntax highlight
-" Default highlight is better than polyglot
-let g:polyglot_disabled = ['python']
-let python_highlight_all = 1
+" " Syntax highlight
+" " Default highlight is better than polyglot
+" let g:polyglot_disabled = ['python']
+" let python_highlight_all = 1
 
 
 let g:LanguageClient_serverCommands = {
