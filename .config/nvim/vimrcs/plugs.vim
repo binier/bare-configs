@@ -44,6 +44,7 @@ endif
 Plug 'honza/vim-snippets'
 
 "" Color
+Plug 'rakr/vim-one'
 Plug 'tomasr/molokai'
 Plug 'rafi/awesome-vim-colorschemes'
 "*****************************************************************************
