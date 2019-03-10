@@ -9,6 +9,8 @@ set fileencodings=utf-8
 set bomb
 set binary
 
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
 
 "" Fix backspace indent
 set backspace=indent,eol,start
@@ -22,6 +24,7 @@ set expandtab
 
 "" Enable hidden buffers
 set hidden
+set cmdheight=2
 
 "" Searching
 set hlsearch
@@ -118,6 +121,7 @@ let g:lightline = {
 	\   },
   \   'component_function': {
   \     'gitbranch': 'fugitive#head',
+  \     'cocstatus': 'coc#status'
   \   }
   \ }
 let g:lightline.separator = {
@@ -223,8 +227,11 @@ set autoread
 let mapleader=','
 
 "" Split
-noremap <Leader>h :<C-u>split<CR>
-noremap <Leader>v :<C-u>vsplit<CR>
+noremap <space>h :<C-u>split<CR>
+noremap <space>v :<C-u>vsplit<CR>
+
+"" Open Terminal in buffer
+noremap <space>t :terminal<CR>
 
 "" Git
 noremap <Leader>ga :Gwrite<CR>
@@ -242,13 +249,13 @@ nnoremap <leader>ss :SaveSession<Space>
 nnoremap <leader>sd :DeleteSession<CR>
 nnoremap <leader>sc :CloseSession<CR>
 
-"" Tabs
-nmap <Tab> >>
-nmap <S-Tab> <<
-imap <Tab> <C-t>
-imap <S-Tab> <C-d>
-vmap <Tab> > " currently not working!!!
-vmap <S-Tab> <
+" "" Tabs
+" nmap <Tab> >>
+" nmap <S-Tab> <<
+" imap <Tab> <C-t>
+" imap <S-Tab> <C-d>
+" vmap <Tab> >gv " currently not working!!!
+" vmap <S-Tab> <
 
 "" move line up/down with alt + k/j
 nnoremap <silent> <A-j> :m .+1<CR>==
@@ -295,14 +302,14 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-" syntastic
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '⚠'
-let g:syntastic_auto_loc_list=1
-let g:syntastic_aggregate_errors = 1
+" " syntastic
+" let g:syntastic_always_populate_loc_list=1
+" let g:syntastic_error_symbol='✗'
+" let g:syntastic_warning_symbol='⚠'
+" let g:syntastic_style_error_symbol = '✗'
+" let g:syntastic_style_warning_symbol = '⚠'
+" let g:syntastic_auto_loc_list=1
+" let g:syntastic_aggregate_errors = 1
 
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -385,19 +392,8 @@ augroup vimrc-python
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-" jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_definitions_command = "<leader>d"
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#show_call_signatures = "0"
-let g:jedi#completions_command = "<C-Space>"
-let g:jedi#smart_auto_mappings = 0
-
-" syntastic
-let g:syntastic_python_checkers=['python', 'flake8']
+" " syntastic
+" let g:syntastic_python_checkers=['python', 'flake8']
 
 " " Syntax highlight
 " " Default highlight is better than polyglot
@@ -405,26 +401,26 @@ let g:syntastic_python_checkers=['python', 'flake8']
 " let python_highlight_all = 1
 
 
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['/usr/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    \ 'python': ['/usr/local/bin/pyls'],
-    \ }
-let g:deoplete#enable_at_startup = 1
-highlight ALEErrorSign ctermfg=9
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint'],
-\}
-let g:ale_linters = {
-\   'rust': ['rls', 'cargo']
-\}
+" let g:LanguageClient_serverCommands = {
+"     \ 'rust': ['/usr/bin/rustup', 'run', 'stable', 'rls'],
+"     \ 'javascript': ['javascript-typescript-stdio'],
+"     \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+"     \ 'python': ['/usr/bin/pyls'],
+"     \ }
+" let g:deoplete#enable_at_startup = 1
+" highlight ALEErrorSign ctermfg=9
+" let g:ale_sign_error = '✖'
+" let g:ale_sign_warning = '⚠'
+" let g:ale_fixers = {
+" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+" \   'javascript': ['eslint'],
+" \}
+" let g:ale_linters = {
+" \   'rust': ['rls', 'cargo']
+" \}
 
 
-noremap <Leader>gd :ALEGoToDefinition<CR>
+" noremap <Leader>gd :ALEGoToDefinition<CR>
 " noremap <Leader>af :ALEFix<CR>
 " noremap <Leader>ar :ALEFindReferences<CR>
 " nmap gd :call LanguageClient#textDocument_definition()<CR>

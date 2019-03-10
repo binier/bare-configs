@@ -13,7 +13,7 @@ Plug 'vim-scripts/CSApprox'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 Plug 'Yggdroot/indentLine'
 Plug 'sheerun/vim-polyglot'
 if isdirectory('/usr/local/opt/fzf')
@@ -50,12 +50,14 @@ Plug 'rafi/awesome-vim-colorschemes'
 "*****************************************************************************
 "" Custom bundles
 "*****************************************************************************
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'w0rp/ale'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'w0rp/ale'
 
 " c
 Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
@@ -73,6 +75,7 @@ Plug 'mattn/emmet-vim'
 " javascript
 "" Javascript Bundle
 Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
 
 
 " python
