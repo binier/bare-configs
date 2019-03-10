@@ -35,7 +35,6 @@ endif
 
 let g:vim_bootstrap_editor = 'nvim'
 
-source ~/.config/nvim/vimrcs/plugs.vim
-source ~/.config/nvim/vimrcs/settings.vim
-source ~/.config/nvim/vimrcs/mappings.vim
+runtime vimrcs/plugs.vim
+runtime vimrcs/settings.vim
 
