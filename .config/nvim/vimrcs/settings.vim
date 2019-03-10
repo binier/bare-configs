@@ -183,6 +183,8 @@ set autoread
 "" Map leader to ,
 let mapleader=','
 
+nnoremap <silent> <space>b :Buffers<CR>
+
 "" Split
 noremap <space>h :<C-u>split<CR>
 noremap <space>v :<C-u>vsplit<CR>
@@ -199,6 +201,7 @@ noremap <Leader>gs :Gstatus<CR>
 noremap <Leader>gb :Gblame<CR>
 noremap <Leader>gd :Gvdiff<CR>
 noremap <Leader>gr :Gremove<CR>
+noremap <leader>bl :Git branch<CR>
 
 "" session management
 nnoremap <leader>so :OpenSession<Space>
@@ -229,7 +232,6 @@ set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-nnoremap <silent> <leader>b :Buffers<CR>
 
 "" Opens an edit command with the path of the currently edited file filled in
 noremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>

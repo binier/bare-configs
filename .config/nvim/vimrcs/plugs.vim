@@ -1,14 +1,14 @@
 call plug#begin('~/.local/share/nvim/plugged')
+Plug 'tpope/vim-fugitive'
 
 runtime vimrcs/plugins/nerdtree.vim
 runtime vimrcs/plugins/lightline.vim
 runtime vimrcs/plugins/fzf.vim
 
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'vim-scripts/grep.vim'
 Plug 'vim-scripts/CSApprox'
 Plug 'bronson/vim-trailing-whitespace'
