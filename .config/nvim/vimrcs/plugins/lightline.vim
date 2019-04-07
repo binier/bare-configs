@@ -19,7 +19,7 @@ let g:lightline.separator = {
 	\   'left': '', 'right': ''
   \}
 let g:lightline.subseparator = {
-	\   'left': '', 'right': '' 
+	\   'left': '', 'right': ''
   \}
 let g:lightline.tabline = {
   \   'left': [ ['tabs'] ],

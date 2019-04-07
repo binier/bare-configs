@@ -1,9 +1,4 @@
-"*****************************************************************************
-"" Vim-PLug core
-"*****************************************************************************
-if has('vim_starting')
-  set nocompatible               " Be iMproved
-endif
+set nocompatible               " Be iMproved
 
 let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
 
@@ -32,8 +27,6 @@ if (empty($TMUX))
     set termguicolors
   endif
 endif
-
-let g:vim_bootstrap_editor = 'nvim'
 
 runtime vimrcs/plugs.vim
 runtime vimrcs/settings.vim

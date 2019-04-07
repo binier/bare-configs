@@ -9,6 +9,12 @@ set fileencodings=utf-8
 set bomb
 set binary
 
+" Permanent undo
+set undodir=~/.vimdid
+set undofile
+set nobackup
+set noswapfile
+
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
 
@@ -33,15 +39,13 @@ set ignorecase
 set smartcase
 
 "" Directories for swp files
-set nobackup
-set noswapfile
 
 set fileformats=unix,dos,mac
 
 if exists('$SHELL')
-    set shell=$SHELL
+  set shell=$SHELL
 else
-    set shell=/bin/sh
+  set shell=/bin/sh
 endif
 
 " session management
@@ -62,7 +66,6 @@ let no_buffers_menu=0
 set mousemodel=popup
 set t_Co=256
 set guioptions=egmrti
-set gfn=Monospace\ 10
 colorscheme one
 set background=dark
 
@@ -79,7 +82,6 @@ else
   let g:indentLine_concealcursor = 0
   let g:indentLine_char = '┆'
   let g:indentLine_faster = 1
-
 endif
 
 
@@ -104,21 +106,6 @@ if exists("*fugitive#statusline")
   set statusline+=%{fugitive#statusline()}
 endif
 
-"*****************************************************************************
-"" Abbreviations
-"*****************************************************************************
-"" no one is really happy until you have this shortcuts
-cnoreabbrev W! w!
-cnoreabbrev Q! q!
-cnoreabbrev Qall! qall!
-cnoreabbrev Wq wq
-cnoreabbrev Wa wa
-cnoreabbrev wQ wq
-cnoreabbrev WQ wq
-cnoreabbrev W w
-cnoreabbrev Q q
-cnoreabbrev Qall qall
-
 " grep.vim
 nnoremap <silent> <leader>f :Rgrep<CR>
 let Grep_Default_Options = '-IR'
@@ -129,12 +116,6 @@ let Grep_Skip_Dirs = '.git node_modules'
 let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 let g:vimshell_prompt =  '$ '
 
-" terminal emulation
-if g:vim_bootstrap_editor == 'nvim'
-  nnoremap <silent> <leader>sh :terminal<CR>
-else
-  nnoremap <silent> <leader>sh :VimShellCreate<CR>
-endif
 
 "*****************************************************************************
 "" Functions
@@ -185,12 +166,12 @@ let mapleader=','
 
 nnoremap <silent> <space>b :Buffers<CR>
 
+" terminal emulation
+nnoremap <silent> <space>t :terminal<CR>
+
 "" Split
 noremap <space>h :<C-u>split<CR>
 noremap <space>v :<C-u>vsplit<CR>
-
-"" Open Terminal in buffer
-noremap <space>t :terminal<CR>
 
 "" Git
 noremap <Leader>ga :Gwrite<CR>
@@ -262,15 +243,6 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
 
-" " syntastic
-" let g:syntastic_always_populate_loc_list=1
-" let g:syntastic_error_symbol='✗'
-" let g:syntastic_warning_symbol='⚠'
-" let g:syntastic_style_error_symbol = '✗'
-" let g:syntastic_style_warning_symbol = '⚠'
-" let g:syntastic_auto_loc_list=1
-" let g:syntastic_aggregate_errors = 1
-
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
@@ -300,6 +272,10 @@ endif
 noremap <silent> <Left> :bp<CR>
 noremap <silent> <Right> :bn<CR>
 
+" Move by line
+nnoremap j gj
+nnoremap k gk
+
 "" Close buffer
 noremap <leader>c :bd<CR>
 
@@ -316,22 +292,13 @@ noremap <C-h> <C-w>h
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-"" Open current line on GitHub
-nnoremap <Leader>o :.Gbrowse<CR>
-
 "*****************************************************************************
 " Custom configs
 "*****************************************************************************
 
-" " c
-" autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
-" autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
-
-
-" " html
-" " for html files, 2 spaces
-" autocmd Filetype html setlocal ts=2 sw=2 expandtab
-
+" html
+" for html files, 2 spaces
+autocmd Filetype html setlocal ts=2 sw=2 expandtab
 
 " javascript
 let g:javascript_enable_domhtmlcss = 1
@@ -342,7 +309,6 @@ augroup vimrc-javascript
   autocmd FileType javascript set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
 augroup END
 
-
 " python
 " vim-python
 augroup vimrc-python
@@ -352,32 +318,23 @@ augroup vimrc-python
       \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
-" " syntastic
-" let g:syntastic_python_checkers=['python', 'flake8']
-
-" " Syntax highlight
-" " Default highlight is better than polyglot
-" let g:polyglot_disabled = ['python']
-" let python_highlight_all = 1
-
-
-" let g:LanguageClient_serverCommands = {
-"     \ 'rust': ['/usr/bin/rustup', 'run', 'stable', 'rls'],
-"     \ 'javascript': ['javascript-typescript-stdio'],
-"     \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-"     \ 'python': ['/usr/bin/pyls'],
-"     \ }
-" let g:deoplete#enable_at_startup = 1
-" highlight ALEErrorSign ctermfg=9
-" let g:ale_sign_error = '✖'
-" let g:ale_sign_warning = '⚠'
-" let g:ale_fixers = {
-" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-" \   'javascript': ['eslint'],
-" \}
-" let g:ale_linters = {
-" \   'rust': ['rls', 'cargo']
-" \}
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['/usr/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    \ 'python': ['/usr/bin/pyls'],
+    \ }
+let g:deoplete#enable_at_startup = 1
+highlight ALEErrorSign ctermfg=9
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\}
+let g:ale_linters = {
+\   'rust': ['rls', 'cargo']
+\}
 
 
 " noremap <Leader>gd :ALEGoToDefinition<CR>
