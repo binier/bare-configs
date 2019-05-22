@@ -10,6 +10,9 @@ map <space> <leader>
 " Disable line numbers
 " set nonumber
 
+" enable mouse
+set mouse=a
+
 " Don't show last command
 set noshowcmd
 
@@ -53,6 +56,10 @@ set cmdheight=1
 " Don't give completion messages like 'match 1 of 2'
 " or 'The only match'
 set shortmess+=c
+
+" Move by line
+nnoremap j gj
+nnoremap k gk
 
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
@@ -123,6 +130,10 @@ catch
   echo 'Denite not installed. It should work after running :PlugInstall'
 endtry
 
+" === Git === "
+map <silent> <leader>gf :Gfetch<CR>
+map <silent> <leader>gp :Gpull<CR>
+
 " === Coc.nvim === "
 " use <tab> for trigger completion and navigate to next complete item
 function! s:check_back_space() abort
@@ -141,6 +152,15 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>af  <Plug>(coc-fix-current)
 
 " Remap for format selected region
 xmap <leader>F  <Plug>(coc-format-selected)
@@ -278,7 +298,7 @@ catch
 endtry
 
 " Vim airline theme
-let g:airline_theme='space'
+let g:airline_theme='bubblegum'
 
 " Add custom highlights in method that is executed every time a
 " colorscheme is sourced
@@ -334,7 +354,6 @@ hi! SignifySignAdd guifg=#99c794
 hi! SignifySignDelete guifg=#ec5f67
 hi! SignifySignChange guifg=#c594c5
 
-" Call method on window enter
 augroup WindowManagement
   autocmd!
   autocmd WinEnter * call Handle_Win_Enter()
@@ -381,7 +400,8 @@ nmap <leader>y :StripWhitespace<CR>
 "   <leader>fr - Find and replace
 "   <leader>/ - Claer highlighted search terms while preserving history
 map <leader>fr :%s///<left><left>
-nmap <silent> <leader>/ :nohlsearch<CR>
+"" Clean search (highlight)
+nmap <silent> <leader>/ :noh<CR>
 
 " === Easy-motion shortcuts ==="
 "   <leader>w - Easy-motion highlights first word letters bi-directionally
@@ -399,12 +419,36 @@ nmap <leader>z :JsDoc<CR>
 " Vim's default buffer
 vnoremap <leader>p "_dP
 
+"" Set working directory
+nnoremap <leader>. :lcd %:p:h<CR>
+
+"" move line up/down with alt + k/j
+nnoremap <silent> <A-j> :m .+1<CR>==
+nnoremap <silent> <A-k> :m .-2<CR>==
+inoremap <silent> <A-j> <Esc>:m .+1<CR>==gi
+inoremap <silent> <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
+vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
+
+"" Split
+noremap <Leader>h :<C-u>split<CR>
+noremap <Leader>v :<C-u>vsplit<CR>
+
+" Buffer mappings
+map <silent> <leader>x :bd<CR>
+map <silent> <leader><space> :bp<CR>
+map <silent> <leader>n :bn<CR>
+
 " ============================================================================ "
 " ===                                 MISC.                                === "
 " ============================================================================ "
 
 " Automaticaly close nvim if NERDTree is only thing left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" html
+" for html files, 2 spaces
+autocmd Filetype html setlocal ts=2 sw=2 expandtab
 
 " === Search === "
 " ignore case when searching

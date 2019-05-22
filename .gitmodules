@@ -1,6 +1,6 @@
 [submodule ".config/zsh/oh-my-zsh"]
 	path = .config/zsh/oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh
-[submodule "/home/puser/.tmux/plugins/tpm"]
-	path = /home/puser/.tmux/plugins/tpm
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm

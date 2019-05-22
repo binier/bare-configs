@@ -24,6 +24,8 @@ call plug#begin('~/.config/nvim/plugged')
 " Trailing whitespace highlighting & automatic fixing
 Plug 'ntpeters/vim-better-whitespace'
 
+Plug 'tpope/vim-commentary'
+
 " auto-close plugin
 Plug 'rstacruz/vim-closer'
 
@@ -44,14 +46,15 @@ Plug 'Shougo/denite.nvim'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 
-" Print function signatures in echo area
-Plug 'Shougo/echodoc.vim'
-
 " === Git Plugins === "
 " Enable git changes to be shown in sign column
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
+Plug 'idanarye/vim-merginal'
 Plug 'airblade/vim-gitgutter'
+
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'thosakwe/vim-flutter'
 
 " === Javascript Plugins === "
 " Typescript syntax highlighting
