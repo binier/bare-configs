@@ -384,8 +384,9 @@ nnoremap <leader>fg :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
 " === Nerdtree shorcuts === "
 "  <leader>n - Toggle NERDTree on/off
 "  <leader>f - Opens current file location in NERDTree
-nmap <F2> :NERDTreeToggle<CR>
-nmap <F3> :NERDTreeFind<CR>
+map <F1> :NERDTreeToggle<CR>
+map <F2> :NERDTreeFind<CR>
+map <F3> :Twiggy<CR>
 
 " === coc.nvim === "
 nmap <silent> <leader>dd <Plug>(coc-definition)

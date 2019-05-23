@@ -41,6 +41,7 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " Denite - Fuzzy finding, buffer management
 Plug 'Shougo/denite.nvim'
+Plug 'chemzqm/denite-git'
 
 " Snippet support
 Plug 'Shougo/neosnippet'
@@ -48,10 +49,11 @@ Plug 'Shougo/neosnippet-snippets'
 
 " === Git Plugins === "
 " Enable git changes to be shown in sign column
-Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
-Plug 'idanarye/vim-merginal'
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
+Plug 'junegunn/gv.vim'
+Plug 'sodapopcan/vim-twiggy'
+Plug 'rhysd/git-messenger.vim'
 
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'thosakwe/vim-flutter'
