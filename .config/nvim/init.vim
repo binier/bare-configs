@@ -5,57 +5,75 @@ source ~/.config/nvim/plugins.vim
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
 
-map <space> <leader>
+" Vim Settings: {{{
+  map <space> <leader>
 
-" Disable line numbers
-" set nonumber
+  " Disable line numbers
+  set nonumber
 
-" enable mouse
-set mouse=a
+  " enable mouse
+  set mouse=a
 
-" Don't show last command
-set noshowcmd
+  " Don't show last command
+  set noshowcmd
 
-" Yank and paste with the system clipboard
-set clipboard=unnamed
+  " set folds by syntax of current language
+  set foldmethod=manual
 
-" Hides buffers instead of closing them
-set hidden
+  " do incremental searching
+  set incsearch
 
-" === TAB/Space settings === "
-" Insert spaces when TAB is pressed.
-set expandtab
+  " extended regular expressions
+  set magic
 
-" Change number of spaces that a <Tab> counts for during editing ops
-set softtabstop=2
+  " Yank and paste with the system clipboard
+  set clipboard=unnamed
 
-" Indentation amount for < and > commands.
-set shiftwidth=2
+  " Hides buffers instead of closing them
+  set hidden
 
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=200
+  " === TAB/Space settings === "
+  " Insert spaces when TAB is pressed.
+  set expandtab
 
-" do not wrap long lines by default
-set nowrap
+  " Change number of spaces that a <Tab> counts for during editing ops
+  set softtabstop=2
 
-" don't compare whitespace in vimdiff
-set diffopt+=iwhite
+  " Indentation amount for < and > commands.
+  set shiftwidth=2
 
-" Don't highlight current cursor line
-" set nocursorline
+  " Smaller updatetime for CursorHold & CursorHoldI
+  set updatetime=200
 
-" Disable line/column number in status line
-" Shows up in preview window when airline is disabled if not
-set noruler
+  " do not wrap long lines by default
+  set nowrap
 
-" Only one line for command line
-set cmdheight=1
+  " don't compare whitespace in vimdiff
+  set diffopt+=iwhite
 
-" === Completion Settings === "
+  " use vertical diff
+  set diffopt+=vertical
 
-" Don't give completion messages like 'match 1 of 2'
-" or 'The only match'
-set shortmess+=c
+  " Don't highlight current cursor line
+  " set nocursorline
+
+  " Disable line/column number in status line
+  " Shows up in preview window when airline is disabled if not
+  set noruler
+
+  " make scrolling faster
+  set ttyfast
+  set lazyredraw
+
+  " Only one line for command line
+  set cmdheight=1
+
+  " === Completion Settings === "
+
+  " Don't give completion messages like 'match 1 of 2'
+  " or 'The only match'
+  set shortmess+=c
+" }}}
 
 " Move by line
 nnoremap j gj
@@ -65,74 +83,15 @@ nnoremap k gk
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
 
-" Wrap in try/catch to avoid errors on initial install before plugin is available
-try
-" === Denite setup ==="
-" Use ripgrep for searching current directory for files
-" By default, ripgrep will respect rules in .gitignore
-"   --files: Print each file that would be searched (but don't search)
-"   --glob:  Include or exclues files for searching that match the given glob
-"            (aka ignore .git files)
-"
-call denite#custom#var('file/rec', 'command', ['rg', '--files', '--glob', '!.git'])
-
-" Use ripgrep in place of "grep"
-call denite#custom#var('grep', 'command', ['rg'])
-
-" Custom options for ripgrep
-"   --vimgrep:  Show results with every match on it's own line
-"   --hidden:   Search hidden directories and files
-"   --heading:  Show the file name above clusters of matches from each file
-"   --S:        Search case insensitively if the pattern is all lowercase
-call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
-
-" Recommended defaults for ripgrep via Denite docs
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-
-" Remove date from buffer list
-call denite#custom#var('buffer', 'date_format', '')
-
-" Custom options for Denite
-"   auto_resize             - Auto resize the Denite window height automatically.
-"   prompt                  - Customize denite prompt
-"   direction               - Specify Denite window direction as directly below current pane
-"   winminheight            - Specify min height for Denite window
-"   highlight_mode_insert   - Specify h1-CursorLine in insert mode
-"   prompt_highlight        - Specify color of prompt
-"   highlight_matched_char  - Matched characters highlight
-"   highlight_matched_range - matched range highlight
-let s:denite_options = {'default' : {
-\ 'auto_resize': 1,
-\ 'prompt': 'λ:',
-\ 'direction': 'rightbelow',
-\ 'winminheight': '10',
-\ 'highlight_mode_insert': 'Visual',
-\ 'highlight_mode_normal': 'Visual',
-\ 'prompt_highlight': 'Function',
-\ 'highlight_matched_char': 'Function',
-\ 'highlight_matched_range': 'Normal'
-\ }}
-
-" Loop through denite options and enable them
-function! s:profile(opts) abort
-  for l:fname in keys(a:opts)
-    for l:dopt in keys(a:opts[l:fname])
-      call denite#custom#option(l:fname, l:dopt, a:opts[l:fname][l:dopt])
-    endfor
-  endfor
-endfunction
-
-call s:profile(s:denite_options)
-catch
-  echo 'Denite not installed. It should work after running :PlugInstall'
-endtry
-
 " === Git === "
-map <silent> <leader>gf :Gfetch<CR>
-map <silent> <leader>gp :Gpull<CR>
+noremap <leader>gf :Gfetch<CR>
+noremap <leader>gp :Gpull<CR>
+noremap <Leader>gP :Gpush<CR>
+noremap <Leader>gc :Gcommit<CR>
+noremap <Leader>gs :Gstatus<CR>
+noremap <Leader>gb :Gblame<CR>
+noremap <Leader>gd :Gvdiff<CR>
+noremap <Leader>gr :Gremove<CR>
 
 " === Coc.nvim === "
 " use <tab> for trigger completion and navigate to next complete item
@@ -282,6 +241,103 @@ let g:used_javascript_libs = 'underscore,requirejs,chai,jquery'
 " === Signify === "
 let g:signify_sign_delete = '-'
 
+" ======================================
+" FZF + DevIcons
+" ======================================
+
+" Files + devicons
+function! Fzf_dev()
+  let l:fzf_files_options = '--preview "rougify {2..-1} | head -'.&lines.'"'
+
+  function! s:files()
+    let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+    return s:prepend_icon(l:files)
+  endfunction
+
+  function! s:prepend_icon(candidates)
+    let l:result = []
+    for l:candidate in a:candidates
+      let l:filename = fnamemodify(l:candidate, ':p:t')
+      let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
+      call add(l:result, printf('%s %s', l:icon, l:candidate))
+    endfor
+
+    return l:result
+  endfunction
+
+  function! s:edit_file(item)
+    let l:pos = stridx(a:item, ' ')
+    let l:file_path = a:item[pos+1:-1]
+    " TODO: not working
+    let l:cmd = get({
+               \ 'ctrl-x': 'split',
+               \ 'ctrl-v': 'vertical split',
+               \ 'ctrl-t': 'tabe'
+               \ }, a:item[0], 'e')
+    execute 'silent ' . l:cmd . ' ' . l:file_path
+  endfunction
+
+  call fzf#run({
+        \ 'source': <sid>files(),
+        \ 'sink':   function('s:edit_file'),
+        \ 'options': '-m --expect=ctrl-t,ctrl-v,ctrl-x '.
+        \            l:fzf_files_options,
+        \ 'down':    '40%' })
+endfunction
+
+" Custom FZF commands ----------------------------- {{{
+fun! s:change_branch(e)
+  let l:_ = system('git checkout ' . a:e)
+  :e!
+  :AirlineRefresh
+  echom 'Changed branch to' . a:e
+endfun
+
+ fun! s:parse_pivotal_story(entry)
+    let l:stories = pivotaltracker#stories('', '')
+    let l:filtered = filter(l:stories, {_idx, val -> val.menu == a:entry[0]})
+    return l:filtered[0].word
+ endfun
+
+ inoremap <expr> <c-x># fzf#complete(
+       \ {
+       \ 'source': map(pivotaltracker#stories('', ''), {_key, val -> val.menu}),
+       \ 'reducer': function('<sid>parse_pivotal_story'),
+       \ 'options': '-m',
+       \ 'down': '20%'
+       \ })
+
+ inoremap <expr> <c-x>t fzf#complete(
+       \ {
+       \ 'source': map(pivotaltracker#stories('', ''), {_key, val -> val.menu}),
+       \ 'options': '-m',
+       \ 'down': '20%'
+       \ })
+
+command! Gbranch call fzf#run(
+      \ {
+      \ 'source': 'git branch',
+      \ 'sink': function('<sid>change_branch'),
+      \ 'options': '-m',
+      \ 'down': '20%'
+      \ })
+
+fun! s:change_remote_branch(e)
+  let l:_ = system('git checkout --track ' . a:e)
+  :e!
+  :AirlineRefresh
+  echom 'Changed to remote branch' . a:e
+endfun
+
+command! Grbranch call fzf#run(
+      \ {
+      \ 'source': 'git branch -r',
+      \ 'sink': function('<sid>change_remote_branch'),
+      \ 'options': '-m',
+      \ 'down': '20%'
+      \ })
+" --------------------------------------------------}}}
+
 " ============================================================================ "
 " ===                                UI                                    === "
 " ============================================================================ "
@@ -320,11 +376,10 @@ set fillchars+=vert:.
 
 " Set preview window to appear at bottom
 set splitbelow
+set splitright
 
 " Don't dispay mode in command line (airilne already shows it)
 set noshowmode
-
-" coc.nvim color changes
 hi! link CocErrorSign WarningMsg
 hi! link CocWarningSign Number
 hi! link CocInfoSign Type
@@ -370,20 +425,24 @@ endfunction
 " ===                             KEY MAPPINGS                             === "
 " ============================================================================ "
 
-" === Denite shorcuts === "
-"   ;         - Browser currently open buffers
-"   <leader>ff - Browse list of files in current directory
-"   <leader>fG - Search current directory for occurences of given term and
-"   close window if no results
-"   <leader>fg - Search current directory for occurences of word under cursor
-nmap <leader>b :Denite buffer -split=floating -winrow=1<CR>
-nmap <leader>ff :Denite file/rec -split=floating -winrow=1<CR>
-nnoremap <leader>fG :<C-u>Denite grep:. -no-empty -mode=normal<CR>
-nnoremap <leader>fg :<C-u>DeniteCursorWord grep:. -mode=normal<CR>
+" FZF: {{{
+  nnoremap <leader>b :Buffers<CR>
+  nnoremap <leader> :Gbranch<CR>
+  " git ls-files
+  nnoremap <leader>ff :GFiles<CR>
+  " ls all files
+  nnoremap <leader>fF :Files<CR>
+  " lines for current buffer
+  nnoremap <leader>fl :BLines<CR>
+  " lines for opened buffers
+  nnoremap <leader>fL :Lines<CR>
+  nnoremap <leader>fm :Marks<CR>
+  " REQUIRES: "fugitive.vim", commits for current buffer
+  nnoremap <leader>fc :BCommits<CR>
+  " REQUIRES: "fugitive.vim", commits
+  nnoremap <leader>fC :Commits<CR>
+" }}}
 
-" === Nerdtree shorcuts === "
-"  <leader>n - Toggle NERDTree on/off
-"  <leader>f - Opens current file location in NERDTree
 map <F1> :NERDTreeToggle<CR>
 map <F2> :NERDTreeFind<CR>
 map <F3> :Twiggy<CR>

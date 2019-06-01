@@ -3,31 +3,55 @@
 " ============================================================================ "
 
 " check whether vim-plug is installed and install it if necessary
-let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
-if !filereadable(plugpath)
-    if executable('curl')
-        let plugurl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-        call system('curl -fLo ' . shellescape(plugpath) . ' --create-dirs ' . plugurl)
-        if v:shell_error
-            echom "Error downloading vim-plug. Please install it manually.\n"
-            exit
-        endif
-    else
-        echom "vim-plug not installed. Please install it manually or install curl.\n"
-        exit
-    endif
-endif
+" VimPlug: {{{
+  let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
+  if !filereadable(plugpath)
+      if executable('curl')
+          let plugurl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+          call system('curl -fLo ' . shellescape(plugpath) . ' --create-dirs ' . plugurl)
+          if v:shell_error
+              echom "Error downloading vim-plug. Please install it manually.\n"
+              exit
+          endif
+      else
+          echom "vim-plug not installed. Please install it manually or install curl.\n"
+          exit
+      endif
+  endif
+" }}}
 
 call plug#begin('~/.config/nvim/plugged')
+
+" Plug '~/projects/neovim-dbman'
+
+" Legacy Vim: {{{
+  " Compatibility for legacy vim with neovim's async api
+  if !has('nvim')
+    Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'roxma/nvim-yarp'
+  endif
+" }}}
+
+" Dependencies: {{{
+  " Create custom text objects (required by rubyblock,xmlattr)
+  Plug 'kana/vim-textobj-user'
+" }}}
 
 " === Editing Plugins === "
 " Trailing whitespace highlighting & automatic fixing
 Plug 'ntpeters/vim-better-whitespace'
 
+" comments
 Plug 'tpope/vim-commentary'
 
-" auto-close plugin
-Plug 'rstacruz/vim-closer'
+" allow (non-native) plugins to use the . command
+Plug 'tpope/vim-repeat'
+
+" Surround text with closures
+Plug 'tpope/vim-surround'
+
+" save vim sessions
+Plug 'tpope/vim-obsession'
 
 " Improved motion in Vim
 Plug 'easymotion/vim-easymotion'
@@ -36,63 +60,136 @@ Plug 'easymotion/vim-easymotion'
 " Plug 'neoclide/coc.nvim', { 'do': 'yarn install' }
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
-" Tmux/Neovim movement integration
-Plug 'christoomey/vim-tmux-navigator'
+" Fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
-" Denite - Fuzzy finding, buffer management
-Plug 'Shougo/denite.nvim'
-Plug 'chemzqm/denite-git'
+" Searching: {{{
+  " highlights all search results and allows tabbing between them
+  Plug 'haya14busa/incsearch.vim'
 
-" Snippet support
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+  " Sublime text like search results
+  Plug 'dyng/ctrlsf.vim', { 'on': 'CtrlSF' }
 
-" === Git Plugins === "
-" Enable git changes to be shown in sign column
-Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-signify'
-Plug 'junegunn/gv.vim'
-Plug 'sodapopcan/vim-twiggy'
-Plug 'rhysd/git-messenger.vim'
+  " RipGrep - grep is dead. All hail the new king RipGrep.
+  Plug 'jremmen/vim-ripgrep'
+" }}}
 
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'thosakwe/vim-flutter'
+" Align Code: {{{
+  " same as tabular but by Junegunn and way easier
+  Plug 'junegunn/vim-easy-align'
+" }}}
 
-" === Javascript Plugins === "
-" Typescript syntax highlighting
-Plug 'HerringtonDarkholme/yats.vim'
+" TMUX: {{{
+  " .tmux.conf syntax highlighting
+  Plug 'keith/tmux.vim', { 'for': 'tmux' }
 
-" ReactJS JSX syntax highlighting
-Plug 'mxw/vim-jsx'
+  " tmux config file stuff
+  Plug 'tmux-plugins/vim-tmux', { 'on': 'Mux' }
 
-" Generate JSDoc commands based on function signature
-Plug 'heavenshell/vim-jsdoc'
+  " vim slime for tmux integration (C-c, C-c to send selction to tmux)
+  Plug 'jpalardy/vim-slime', { 'on': 'Mux' }
 
-" === Syntax Highlighting === "
+  " seamless tmux/vim pane navigation
+  Plug 'christoomey/vim-tmux-navigator', { 'on': 'Mux' }
 
-" Syntax highlighting for nginx
-Plug 'chr4/nginx.vim'
+  " yet another tmux plugin
+  Plug 'benmills/vimux', { 'on': 'Mux' }
 
-" Syntax highlighting for javascript libraries
-Plug 'othree/javascript-libraries-syntax.vim'
+  " autocomplete using text from tmux
+  Plug 'wellle/tmux-complete.vim', { 'on': 'Mux' }
+" }}}
 
-" Improved syntax highlighting and indentation
-Plug 'othree/yajs.vim'
+" Git: {{{
+  Plug 'tpope/vim-fugitive'
+  Plug 'mhinz/vim-signify'
+  Plug 'junegunn/gv.vim'
+  Plug 'sodapopcan/vim-twiggy'
+  Plug 'rhysd/git-messenger.vim'
+" }}}
 
-" === UI === "
-" File explorer
-Plug 'scrooloose/nerdtree'
+
+" HTML: {{{
+  " Emmet: generates html tags, autocomplete css
+  Plug 'mattn/emmet-vim'
+
+  " RagTag: Auto-close html tags + mappings for template scripting languages
+  Plug 'tpope/vim-ragtag'
+
+  " add text object for HTML attributes - allows dax cix etc
+  Plug 'whatyouhide/vim-textobj-xmlattr'
+" }}}
+
+" CSS SCSS: {{{
+  " up to date CSS3 syntax highlighting
+  Plug 'hail2u/vim-css3-syntax'
+
+  " css language server
+  Plug 'vscode-langservers/vscode-css-languageserver-bin'
+" }}}
+
+" JavaScript: {{{
+  " JavaScript support (required by vim-jsx)
+  Plug 'pangloss/vim-javascript'
+
+  " Improved syntax highlighting and indentation
+  Plug 'othree/yajs.vim'
+
+  " JSON manipulation
+  Plug 'tpope/vim-jdaddy', { 'for': 'json' }
+
+  " Generate JSDoc commands based on function signature
+  Plug 'heavenshell/vim-jsdoc'
+
+  " Syntax highlighting for javascript libraries
+  Plug 'othree/javascript-libraries-syntax.vim'
+" }}}
+
+" TypeScript: {{{
+  Plug 'leafgarland/typescript-vim'
+" }}}
+
+" Dart Flutter: {{
+  Plug 'dart-lang/dart-vim-plugin'
+  Plug 'thosakwe/vim-flutter'
+" }}
+
+" VimScript: {{{
+  " vim plugin for writing vim plugins
+  Plug 'tpope/vim-scriptease'
+" }}}
+
+" Docker {{{
+  Plug 'ekalinin/Dockerfile.vim', {'for' : 'Dockerfile'}
+" }}}
+
+" NerdTree: {{{
+  Plug 'scrooloose/nerdtree'
+
+  " NerdTree show git status
+  Plug 'Xuyuanp/nerdtree-git-plugin'
+
+  " highlight file icons with different colors
+  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" }}}
+
+" Airline: {{{
+  " Customized vim status line
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+" }}}
+
+" Indent lines (visual indication)
+Plug 'Yggdroot/indentLine'
+
+" resize windows in vim naturally
+Plug 'simeji/winresizer', { 'on': 'WinResizerStartResize' }
 
 " Colorscheme
 Plug 'mhartington/oceanic-next'
 
-" Customized vim status line
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
 " Icons
 Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Initialize plugin system
 call plug#end()
