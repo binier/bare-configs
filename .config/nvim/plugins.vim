@@ -22,7 +22,8 @@
 
 call plug#begin('~/.config/nvim/plugged')
 
-" Plug '~/projects/neovim-dbman'
+" Plug '~/projects/neovim-calculator'
+Plug '~/projects/neovim-dbman'
 
 " Legacy Vim: {{{
   " Compatibility for legacy vim with neovim's async api
@@ -54,7 +55,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
 
 " Improved motion in Vim
-Plug 'easymotion/vim-easymotion'
+" Plug 'easymotion/vim-easymotion'
 
 " Intellisense Engine
 " Plug 'neoclide/coc.nvim', { 'do': 'yarn install' }
@@ -102,6 +103,7 @@ Plug 'junegunn/fzf.vim'
 
 " Git: {{{
   Plug 'tpope/vim-fugitive'
+  Plug 'lambdalisue/gina.vim'
   Plug 'mhinz/vim-signify'
   Plug 'junegunn/gv.vim'
   Plug 'sodapopcan/vim-twiggy'
@@ -163,14 +165,12 @@ Plug 'junegunn/fzf.vim'
   Plug 'ekalinin/Dockerfile.vim', {'for' : 'Dockerfile'}
 " }}}
 
-" NerdTree: {{{
-  Plug 'scrooloose/nerdtree'
+" File Explorer: {{{
+  Plug 'Shougo/defx.nvim'
 
-  " NerdTree show git status
-  Plug 'Xuyuanp/nerdtree-git-plugin'
+  " Plug 'kristijanhusak/defx-git'
 
-  " highlight file icons with different colors
-  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+  " Plug 'kristijanhusak/defx-icons'
 " }}}
 
 " Airline: {{{
@@ -179,6 +179,7 @@ Plug 'junegunn/fzf.vim'
   Plug 'vim-airline/vim-airline-themes'
 " }}}
 
+Plug 'majutsushi/tagbar'
 " Indent lines (visual indication)
 Plug 'Yggdroot/indentLine'
 

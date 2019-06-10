@@ -1,6 +1,20 @@
 scriptencoding utf-8
-source ~/.config/nvim/plugins.vim
+execute "set guioptions=M"
 
+let g:phome = '~/.config/nvim/'
+
+function! Source(path)
+  exec "source " . g:phome . '/' . a:path
+endfunction
+
+" source plugin config file
+function! SourcePlugin(fname)
+  call Source('plugins/' . a:fname)
+endfunction
+
+call Source('plugins.vim')
+call SourcePlugin('defx.vim')
+call SourcePlugin('airline.vim')
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
@@ -17,8 +31,9 @@ source ~/.config/nvim/plugins.vim
   " Don't show last command
   set noshowcmd
 
-  " set folds by syntax of current language
-  set foldmethod=manual
+  set foldmethod=syntax
+  set foldnestmax=2
+  " set nofoldenable
 
   " do incremental searching
   set incsearch
@@ -55,7 +70,7 @@ source ~/.config/nvim/plugins.vim
   set diffopt+=vertical
 
   " Don't highlight current cursor line
-  " set nocursorline
+  set nocursorline
 
   " Disable line/column number in status line
   " Shows up in preview window when airline is disabled if not
@@ -64,6 +79,7 @@ source ~/.config/nvim/plugins.vim
   " make scrolling faster
   set ttyfast
   set lazyredraw
+  set regexpengine=1
 
   " Only one line for command line
   set cmdheight=1
@@ -79,19 +95,31 @@ source ~/.config/nvim/plugins.vim
 nnoremap j gj
 nnoremap k gk
 
+" indent by single click on '>' and '<'
+nmap > >>_
+xmap > >gv
+
+nmap < <<_
+xmap < <gv
+
 " ============================================================================ "
 " ===                           PLUGIN SETUP                               === "
 " ============================================================================ "
 
 " === Git === "
-noremap <leader>gf :Gfetch<CR>
-noremap <leader>gp :Gpull<CR>
-noremap <Leader>gP :Gpush<CR>
+noremap <leader>gf :Gina fetch<CR>
+noremap <leader>gp :Gina pull<CR>
+noremap <Leader>gP :Gina push<CR>
 noremap <Leader>gc :Gcommit<CR>
 noremap <Leader>gs :Gstatus<CR>
 noremap <Leader>gb :Gblame<CR>
 noremap <Leader>gd :Gvdiff<CR>
-noremap <Leader>gr :Gremove<CR>
+" add/stage current file
+noremap <Leader>ga :Gina add %<CR>
+" unstage current file
+noremap <Leader>gu :Gina reset -q %<CR>
+" undo last commit
+noremap <Leader>gU :Gina reset --soft HEAD~1<CR>
 
 " === Coc.nvim === "
 " use <tab> for trigger completion and navigate to next complete item
@@ -153,79 +181,6 @@ let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
 
 " Hide conceal markers
 let g:neosnippet#enable_conceal_markers = 0
-
-" === NERDTree === "
-" Show hidden files/directories
-let g:NERDTreeShowHidden = 1
-
-" Remove bookmarks and help text from NERDTree
-let g:NERDTreeMinimalUI = 1
-
-" Custom icons for expandable/expanded directories
-let g:NERDTreeDirArrowExpandable = '⬏'
-let g:NERDTreeDirArrowCollapsible = '⬎'
-
-" Hide certain files and directories from NERDTree
-let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
-
-" Wrap in try/catch to avoid errors on initial install before plugin is available
-try
-
-" === Vim airline ==== "
-" Enable extensions
-let g:airline_extensions = ['branch', 'hunks', 'coc']
-
-" Update section z to just have line number
-let g:airline_section_z = airline#section#create(['linenr'])
-
-" Do not draw separators for empty sections (only for the active window) >
-let g:airline_skip_empty_sections = 1
-
-" Smartly uniquify buffers names with similar filename, suppressing common parts of paths.
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-
-" Custom setup that removes filetype/whitespace from default vim airline bar
-let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'z', 'warning', 'error']]
-
-let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-
-let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
-
-" Configure error/warning section to use coc.nvim
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-
-" Hide the Nerdtree status line to avoid clutter
-let g:NERDTreeStatusline = ''
-
-" Disable vim-airline in preview mode
-let g:airline_exclude_preview = 1
-
-" Enable powerline fonts
-let g:airline_powerline_fonts = 1
-
-" Enable caching of syntax highlighting groups
-let g:airline_highlighting_cache = 1
-
-" Define custom airline symbols
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '❮'
-let g:airline_right_sep = '❯'
-
-" Don't show git changes to current file in airline
-let g:airline#extensions#hunks#enabled=0
-
-catch
-  echo 'Airline not installed. It should work after running :PlugInstall'
-endtry
-
-" === echodoc === "
-" Enable echodoc on startup
-let g:echodoc#enable_at_startup = 1
 
 " === vim-javascript === "
 " Enable syntax highlighting for JSDoc
@@ -293,27 +248,6 @@ fun! s:change_branch(e)
   echom 'Changed branch to' . a:e
 endfun
 
- fun! s:parse_pivotal_story(entry)
-    let l:stories = pivotaltracker#stories('', '')
-    let l:filtered = filter(l:stories, {_idx, val -> val.menu == a:entry[0]})
-    return l:filtered[0].word
- endfun
-
- inoremap <expr> <c-x># fzf#complete(
-       \ {
-       \ 'source': map(pivotaltracker#stories('', ''), {_key, val -> val.menu}),
-       \ 'reducer': function('<sid>parse_pivotal_story'),
-       \ 'options': '-m',
-       \ 'down': '20%'
-       \ })
-
- inoremap <expr> <c-x>t fzf#complete(
-       \ {
-       \ 'source': map(pivotaltracker#stories('', ''), {_key, val -> val.menu}),
-       \ 'options': '-m',
-       \ 'down': '20%'
-       \ })
-
 command! Gbranch call fzf#run(
       \ {
       \ 'source': 'git branch',
@@ -329,13 +263,6 @@ fun! s:change_remote_branch(e)
   echom 'Changed to remote branch' . a:e
 endfun
 
-command! Grbranch call fzf#run(
-      \ {
-      \ 'source': 'git branch -r',
-      \ 'sink': function('<sid>change_remote_branch'),
-      \ 'options': '-m',
-      \ 'down': '20%'
-      \ })
 " --------------------------------------------------}}}
 
 " ============================================================================ "
@@ -427,9 +354,9 @@ endfunction
 
 " FZF: {{{
   nnoremap <leader>b :Buffers<CR>
-  nnoremap <leader> :Gbranch<CR>
+  nnoremap <leader>B :Gbranch<CR>
   " git ls-files
-  nnoremap <leader>ff :GFiles<CR>
+  nnoremap <expr> <leader>ff (len(system('git rev-parse')) ? ':Files' : ':GFiles')."\<cr>"
   " ls all files
   nnoremap <leader>fF :Files<CR>
   " lines for current buffer
@@ -443,9 +370,11 @@ endfunction
   nnoremap <leader>fC :Commits<CR>
 " }}}
 
-map <F1> :NERDTreeToggle<CR>
-map <F2> :NERDTreeFind<CR>
+" === File Explorer === "
+map <silent> <F1> :Defx<CR>
+map <silent> <F2> :Defx `expand('%:p:h')` -search=`expand('%:p')`<CR>
 map <F3> :Twiggy<CR>
+map <F4> :TagbarToggle<CR>
 
 " === coc.nvim === "
 nmap <silent> <leader>dd <Plug>(coc-definition)
@@ -462,10 +391,6 @@ nmap <leader>y :StripWhitespace<CR>
 map <leader>fr :%s///<left><left>
 "" Clean search (highlight)
 nmap <silent> <leader>/ :noh<CR>
-
-" === Easy-motion shortcuts ==="
-"   <leader>w - Easy-motion highlights first word letters bi-directionally
-map <leader>w <Plug>(easymotion-bd-w)
 
 " Allows you to save files you opened without write permissions via sudo
 cmap w!! w !sudo tee %
